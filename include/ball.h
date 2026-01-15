@@ -1,10 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include <cmath>
 #include <cstdint>
-
 struct Ball{
     sf::Vector2f position;
     sf::Vector2f velocity;
@@ -12,9 +9,15 @@ struct Ball{
     sf::Color color;
     sf::Angle direction;
     sf::Texture* texture = nullptr;
-    Ball(sf::Vector2f position, sf::Vector2f velocity, float radius, sf::Color color,sf::Angle direction)
-        :position(position), velocity(velocity), radius(radius), color(color), direction(direction)
-    {}
+    std::uint32_t weight;
 
+    Ball(sf::Vector2f position, sf::Vector2f velocity, float radius, sf::Color color,sf::Angle direction, std::uint32_t weight)
+        :position(position),
+        velocity(velocity),
+        radius(radius),
+        color(color),
+        direction(direction),
+        weight(weight)
+    {}
 };
 

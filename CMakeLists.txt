@@ -8,7 +8,8 @@ list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew")
 find_package(SFML 3 COMPONENTS Graphics Window System Audio REQUIRED)
 
 add_executable(bouncingBalls src/main.cpp
-        include/ball.h)
+        include/ball.h
+        include/ballsEngine.h)
 
 target_link_libraries(bouncingBalls PRIVATE
         SFML::Graphics
