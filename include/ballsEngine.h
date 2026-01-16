@@ -9,7 +9,7 @@ class BallsEngine : public sf::Drawable, public sf::Transformable {
 private:
     std::vector<Ball> balls;
 
-    void handleCollisions(float width, float height) {
+    void handleCollisions(const float width, const float height) {
         for (size_t i = 0; i < balls.size(); ++i) {
             if (balls[i].position.x - balls[i].radius < 0) {
                 balls[i].position.x = balls[i].radius;
@@ -28,23 +28,22 @@ private:
             }
 
             for (size_t j = i + 1; j < balls.size(); ++j) {
-                sf::Vector2f delta = balls[i].position - balls[j].position;
-                float distance = std::sqrt(delta.x * delta.x + delta.y * delta.y);
-                float minDist = balls[i].radius + balls[j].radius;
+                const sf::Vector2f delta = balls[i].position - balls[j].position;
+                const float distance = std::sqrt(delta.x * delta.x + delta.y * delta.y);
 
-                if (distance < minDist && distance > 0) {
-                    float m1 = static_cast<float>(balls[i].weight);
-                    float m2 = static_cast<float>(balls[j].weight);
+                if (float minDist = balls[i].radius + balls[j].radius; distance < minDist && distance > 0) {
+                    auto m1 = static_cast<float>(balls[i].weight);
+                    auto m2 = static_cast<float>(balls[j].weight);
 
                     sf::Vector2f v1 = balls[i].velocity;
                     sf::Vector2f v2 = balls[j].velocity;
 
-                    sf::Vector2f normal = delta / distance;
-                    sf::Vector2f relativeVelocity = v1 - v2;
-                    float velocityAlongNormal = (relativeVelocity.x * normal.x + relativeVelocity.y * normal.y);
+                    const sf::Vector2f normal = delta / distance;
+                    const sf::Vector2f relativeVelocity = v1 - v2;
+                    const float velocityAlongNormal = (relativeVelocity.x * normal.x + relativeVelocity.y * normal.y);
                     if (velocityAlongNormal > 0) continue;
 
-                    float impulse = (2.f * velocityAlongNormal) / (m1 + m2);
+                    const float impulse = (2.f * velocityAlongNormal) / (m1 + m2);
 
                     balls[i].velocity -= impulse * m2 * normal;
                     balls[j].velocity += impulse * m1 * normal;
@@ -59,12 +58,12 @@ private:
     }
 
 public:
-    void generateBalls(int count, sf::Vector2u windowSize) {
+    void generateBalls(int count, const sf::Vector2u windowSize) {
         balls.clear();
 
-        float windowArea = static_cast<float>(windowSize.x * windowSize.y);
-        float targetAreaPerBall = (windowArea * 0.12f) / static_cast<float>(count);
-        float calculatedRadius = std::sqrt(targetAreaPerBall / 3.1415f);
+        const auto windowArea = static_cast<float>(windowSize.x * windowSize.y);
+        const float targetAreaPerBall = (windowArea * 0.12f) / static_cast<float>(count);
+        const float calculatedRadius = std::sqrt(targetAreaPerBall / 3.1415f);
         float finalRadius = std::clamp(calculatedRadius, 5.f, 40.f);
 
         std::mt19937 gen(std::random_device{}());
@@ -80,11 +79,11 @@ public:
             sf::Vector2f v(vel(gen), vel(gen));
             std::uint32_t weight = weightDist(gen);
 
-            balls.push_back(Ball(pos, v, finalRadius, randomColor, sf::degrees(0), weight));
+            balls.emplace_back(pos, v, finalRadius, randomColor, sf::degrees(0), weight);
         }
     }
 
-    void update(float dt, sf::Vector2u windowSize) {
+    void update(const float dt, const sf::Vector2u windowSize) {
         for (auto& ball : balls) {
             ball.position += ball.velocity * dt;
         }
