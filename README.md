@@ -43,7 +43,7 @@ Open a terminal in the project root directory and run:
 mkdir build
 cd build
 cmake ..
-make
+cmake --build .
 ```
 Usage
 You can run the simulator by executing the binary. You can optionally provide the number of balls as an argument:
